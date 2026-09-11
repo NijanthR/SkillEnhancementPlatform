@@ -35,7 +35,6 @@ export default function FacultyVerify() {
     } catch { toast.error('Error') }
   }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Skill Verification ✅">
       <div className="flex gap-2 mb-6 border-b border-gray-200">
@@ -47,9 +46,12 @@ export default function FacultyVerify() {
         ))}
       </div>
 
-      {skills.length === 0
-        ? <EmptyState icon="✅" title={tab === 'pending' ? 'No Pending Skills' : 'No History'} message={tab === 'pending' ? 'All skills are reviewed!' : 'Verified skills will appear here'} />
-        : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : skills.length === 0 ? (
+        <EmptyState icon="✅" title={tab === 'pending' ? 'No Pending Skills' : 'No History'} message={tab === 'pending' ? 'All skills are reviewed!' : 'Verified skills will appear here'} />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {skills.map(s => (
               <div key={s._id} className="card hover:shadow-md transition">
                 <div className="flex justify-between items-start mb-2">
@@ -75,7 +77,7 @@ export default function FacultyVerify() {
               </div>
             ))}
           </div>
-      }
+      )}
 
       <Modal isOpen={!!selected} onClose={() => setSelected(null)} title={`Review: ${selected?.name}`}>
         <form onSubmit={handleVerify} className="space-y-4">

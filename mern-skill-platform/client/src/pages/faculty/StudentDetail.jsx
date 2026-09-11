@@ -43,8 +43,6 @@ export default function StudentDetail() {
     } catch { toast.error('Failed to send') }
   }
 
-  if (loading) return <LoadingSpinner />
-
   const tabs = [
     { key: 'skills', label: `Skills (${skills.length})` },
     { key: 'certs',  label: `Certificates (${certs.length})` },
@@ -56,8 +54,12 @@ export default function StudentDetail() {
     <PageLayout>
       <button onClick={() => navigate('/faculty/students')} className="text-sm text-indigo-600 hover:underline mb-4 block">← Back to Students</button>
 
-      {/* Student Header */}
-      <div className="card mb-6 flex flex-wrap justify-between items-center gap-4">
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          {/* Student Header */}
+          <div className="card mb-6 flex flex-wrap justify-between items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
             {student?.name?.charAt(0)}
@@ -150,6 +152,8 @@ export default function StudentDetail() {
             ))
           }
         </div>
+      )}
+        </>
       )}
 
       {/* Feedback Modal */}

@@ -33,32 +33,37 @@ export default function Competitions() {
     toast.success('Removed')
   }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Competitions 🏆">
-      <div className="flex justify-end mb-6">
-        <button onClick={() => setShowModal(true)} className="btn-primary">+ Add Competition</button>
-      </div>
-      {comps.length === 0
-        ? <EmptyState icon="🏆" title="No Competitions" message="Add competitions you've participated in!" />
-        : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {comps.map(c => (
-              <div key={c._id} className="card hover:shadow-md transition">
-                <div className="flex justify-between items-start">
-                  <h3 className="font-semibold text-gray-800">{c.name}</h3>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${levelColor[c.level]}`}>{c.level}</span>
-                </div>
-                {c.organizer && <p className="text-sm text-gray-500 mt-1">by {c.organizer}</p>}
-                {c.date && <p className="text-xs text-gray-400 mt-1">📅 {new Date(c.date).toLocaleDateString()}</p>}
-                <div className="flex gap-4 mt-3">
-                  {c.result && <div className="text-sm"><span className="font-medium text-gray-600">Result:</span> {c.result}</div>}
-                  {c.position && <div className="text-sm"><span className="font-medium text-gray-600">Position:</span> <span className="text-yellow-600 font-bold">{c.position}</span></div>}
-                </div>
-                <button onClick={() => handleDelete(c._id)} className="text-xs text-red-400 hover:text-red-600 mt-3">Remove</button>
-              </div>
-            ))}
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          <div className="flex justify-end mb-6">
+            <button onClick={() => setShowModal(true)} className="btn-primary">+ Add Competition</button>
           </div>
-      }
+          {comps.length === 0
+            ? <EmptyState icon="🏆" title="No Competitions" message="Add competitions you've participated in!" />
+            : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {comps.map(c => (
+                  <div key={c._id} className="card hover:shadow-md transition">
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-semibold text-gray-800">{c.name}</h3>
+                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${levelColor[c.level]}`}>{c.level}</span>
+                    </div>
+                    {c.organizer && <p className="text-sm text-gray-500 mt-1">by {c.organizer}</p>}
+                    {c.date && <p className="text-xs text-gray-400 mt-1">📅 {new Date(c.date).toLocaleDateString()}</p>}
+                    <div className="flex gap-4 mt-3">
+                      {c.result && <div className="text-sm"><span className="font-medium text-gray-600">Result:</span> {c.result}</div>}
+                      {c.position && <div className="text-sm"><span className="font-medium text-gray-600">Position:</span> <span className="text-yellow-600 font-bold">{c.position}</span></div>}
+                    </div>
+                    <button onClick={() => handleDelete(c._id)} className="text-xs text-red-400 hover:text-red-600 mt-3">Remove</button>
+                  </div>
+                ))}
+              </div>
+          }
+        </>
+      )}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Add Competition">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div><label className="block text-sm font-medium text-gray-700 mb-1">Competition Name</label>

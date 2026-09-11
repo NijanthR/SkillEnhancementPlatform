@@ -24,17 +24,20 @@ export default function Leaderboard() {
 
   const myRank = leaders.find(l => l._id === user?._id)
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Leaderboard 🥇">
-      <div className="flex flex-wrap gap-4 mb-6 items-center">
-        <input value={dept} onChange={e => setDept(e.target.value)} placeholder="Filter by department..." className="input-field max-w-xs" />
-        {myRank && (
-          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2 text-sm">
-            Your Rank: <span className="font-bold text-indigo-700">#{myRank.rank}</span> with <span className="font-bold">{myRank.verifiedCount}</span> verified skills
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          <div className="flex flex-wrap gap-4 mb-6 items-center">
+            <input value={dept} onChange={e => setDept(e.target.value)} placeholder="Filter by department..." className="input-field max-w-xs" />
+            {myRank && (
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2 text-sm">
+                Your Rank: <span className="font-bold text-indigo-700">#{myRank.rank}</span> with <span className="font-bold">{myRank.verifiedCount}</span> verified skills
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
       <div className="card overflow-hidden p-0">
         <table className="w-full text-sm">
@@ -73,6 +76,8 @@ export default function Leaderboard() {
         </table>
         {leaders.length === 0 && <p className="text-center text-gray-400 py-8">No data yet</p>}
       </div>
+        </>
+      )}
     </PageLayout>
   )
 }

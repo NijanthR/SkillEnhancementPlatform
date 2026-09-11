@@ -17,12 +17,14 @@ export default function StudentFeedback() {
     setFeedbacks(prev => prev.map(f => f._id === id ? { ...f, isRead: true } : f))
   }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Faculty Feedback 💬">
-      {feedbacks.length === 0
-        ? <EmptyState icon="💬" title="No Feedback Yet" message="Faculty feedback will appear here" />
-        : <div className="space-y-4 max-w-3xl">
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : feedbacks.length === 0 ? (
+        <EmptyState icon="💬" title="No Feedback Yet" message="Faculty feedback will appear here" />
+      ) : (
+        <div className="space-y-4 max-w-3xl">
             {feedbacks.map(f => (
               <div key={f._id} className={`card border-l-4 ${!f.isRead ? 'border-l-indigo-500 bg-indigo-50' : 'border-l-gray-200'}`}>
                 <div className="flex justify-between items-start">
@@ -53,7 +55,7 @@ export default function StudentFeedback() {
               </div>
             ))}
           </div>
-      }
+      )}
     </PageLayout>
   )
 }

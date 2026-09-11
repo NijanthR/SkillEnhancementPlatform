@@ -24,15 +24,18 @@ export default function FacultyDashboard() {
     }).finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title={`Faculty Dashboard — Welcome, ${user?.name}! 👨‍🏫`}>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard icon="👥" label="Total Students"   value={stats?.totalStudents || 0}  color="indigo" />
-        <StatCard icon="🎯" label="Total Skills"     value={stats?.totalSkills || 0}    color="sky"    />
-        <StatCard icon="✅" label="Verified Skills"  value={stats?.verifiedSkills || 0} color="green"  />
-        <StatCard icon="⏳" label="Pending Review"   value={stats?.pendingSkills || 0}  color="yellow" />
-      </div>
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <StatCard icon="👥" label="Total Students"   value={stats?.totalStudents || 0}  color="indigo" />
+            <StatCard icon="🎯" label="Total Skills"     value={stats?.totalSkills || 0}    color="sky"    />
+            <StatCard icon="✅" label="Verified Skills"  value={stats?.verifiedSkills || 0} color="green"  />
+            <StatCard icon="⏳" label="Pending Review"   value={stats?.pendingSkills || 0}  color="yellow" />
+          </div>
 
       <div className="card">
         <div className="flex justify-between items-center mb-4">
@@ -63,6 +66,8 @@ export default function FacultyDashboard() {
             </table>
         }
       </div>
+        </>
+      )}
     </PageLayout>
   )
 }

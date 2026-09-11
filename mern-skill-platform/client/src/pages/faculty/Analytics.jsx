@@ -16,8 +16,9 @@ export default function Analytics() {
     api.get('/resources/analytics').then(r => setData(r.data)).finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <LoadingSpinner />
-  const { summary, topSkills, statusDist, deptDist } = data
+  const statusDist = data?.statusDist || []
+  const topSkills = data?.topSkills || []
+  const deptDist = data?.deptDist || []
 
   const statusChartData = {
     labels: statusDist.map(s => s._id),
@@ -50,42 +51,48 @@ export default function Analytics() {
 
   return (
     <PageLayout title="Analytics Dashboard 📊">
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard icon="👥" label="Total Students"  value={summary.totalStudents}  color="indigo" />
-        <StatCard icon="🎯" label="Total Skills"    value={summary.totalSkills}    color="sky"    />
-        <StatCard icon="✅" label="Verified"        value={summary.verifiedSkills} color="green"  />
-        <StatCard icon="⏳" label="Pending"         value={summary.pendingSkills}  color="yellow" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        {/* Status Doughnut */}
-        <div className="card">
-          <h3 className="font-semibold text-gray-800 mb-4">Skill Status Distribution</h3>
-          <div className="max-w-xs mx-auto">
-            <Doughnut data={statusChartData} options={{ plugins: { legend: { position: 'bottom' } } }} />
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          {/* Stats */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <StatCard icon="👥" label="Total Students"  value={data?.summary?.totalStudents || 0}  color="indigo" />
+            <StatCard icon="🎯" label="Total Skills"    value={data?.summary?.totalSkills || 0}    color="sky"    />
+            <StatCard icon="✅" label="Verified"        value={data?.summary?.verifiedSkills || 0} color="green"  />
+            <StatCard icon="⏳" label="Pending"         value={data?.summary?.pendingSkills || 0}  color="yellow" />
           </div>
-        </div>
 
-        {/* Top Skills Bar */}
-        <div className="card">
-          <h3 className="font-semibold text-gray-800 mb-4">Top 10 Skills</h3>
-          <Bar data={topSkillsData} options={{
-            indexAxis: 'y',
-            plugins: { legend: { display: false } },
-            scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } },
-          }} />
-        </div>
-      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {/* Status Doughnut */}
+            <div className="card">
+              <h3 className="font-semibold text-gray-800 mb-4">Skill Status Distribution</h3>
+              <div className="max-w-xs mx-auto">
+                <Doughnut data={statusChartData} options={{ plugins: { legend: { position: 'bottom' } } }} />
+              </div>
+            </div>
 
-      {/* Department Distribution */}
-      <div className="card">
-        <h3 className="font-semibold text-gray-800 mb-4">Students by Department</h3>
-        <Bar data={deptData} options={{
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
-        }} />
-      </div>
+            {/* Top Skills Bar */}
+            <div className="card">
+              <h3 className="font-semibold text-gray-800 mb-4">Top 10 Skills</h3>
+              <Bar data={topSkillsData} options={{
+                indexAxis: 'y',
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } },
+              }} />
+            </div>
+          </div>
+
+          {/* Department Distribution */}
+          <div className="card">
+            <h3 className="font-semibold text-gray-800 mb-4">Students by Department</h3>
+            <Bar data={deptData} options={{
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+            }} />
+          </div>
+        </>
+      )}
     </PageLayout>
   )
 }

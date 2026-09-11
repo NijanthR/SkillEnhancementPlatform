@@ -59,10 +59,13 @@ export default function StudentSkills() {
 
   const statusColor = { Verified: 'border-l-emerald-500', Rejected: 'border-l-red-500', Pending: 'border-l-yellow-500', 'Needs Improvement': 'border-l-orange-500' }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="My Skills 🎯">
-      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
         <select value={filter} onChange={e => setFilter(e.target.value)} className="input-field max-w-xs">
           <option value="">All Categories</option>
           {CATEGORIES.map(c => <option key={c}>{c}</option>)}
@@ -91,6 +94,8 @@ export default function StudentSkills() {
             ))}
           </div>
       }
+        </>
+      )}
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title={editSkill ? 'Edit Skill' : 'Add New Skill'}>
         <form onSubmit={handleSubmit} className="space-y-4">

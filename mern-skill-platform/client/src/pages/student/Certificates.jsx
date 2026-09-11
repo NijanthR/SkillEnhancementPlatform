@@ -42,35 +42,40 @@ export default function Certificates() {
     } finally { setUploading(false) }
   }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="My Certificates 📜">
-      <div className="flex justify-end mb-6">
-        <button onClick={() => setShowModal(true)} className="btn-primary">+ Upload Certificate</button>
-      </div>
-
-      {certs.length === 0
-        ? <EmptyState icon="📜" title="No Certificates" message="Upload your first certificate!" action={<button onClick={() => setShowModal(true)} className="btn-primary">Upload</button>} />
-        : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {certs.map(c => (
-              <div key={c._id} className="card hover:shadow-md transition">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="text-3xl">📄</div>
-                  <StatusBadge status={c.status} />
-                </div>
-                <h3 className="font-semibold text-gray-800">{c.title}</h3>
-                <p className="text-sm text-gray-500 mt-1">Issued by: {c.issuedBy}</p>
-                {c.issuedDate && <p className="text-xs text-gray-400 mt-1">{new Date(c.issuedDate).toLocaleDateString()}</p>}
-                {c.skillId && <p className="text-xs text-indigo-500 mt-1">Skill: {c.skillId?.name}</p>}
-                {c.reviewNote && <p className="text-xs bg-gray-50 rounded p-2 mt-2 text-gray-600">{c.reviewNote}</p>}
-                <a href={c.fileUrl} target="_blank" rel="noopener noreferrer"
-                  className="mt-3 inline-block text-xs text-indigo-600 hover:underline">
-                  View Certificate →
-                </a>
-              </div>
-            ))}
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          <div className="flex justify-end mb-6">
+            <button onClick={() => setShowModal(true)} className="btn-primary">+ Upload Certificate</button>
           </div>
-      }
+
+          {certs.length === 0
+            ? <EmptyState icon="📜" title="No Certificates" message="Upload your first certificate!" action={<button onClick={() => setShowModal(true)} className="btn-primary">Upload</button>} />
+            : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {certs.map(c => (
+                  <div key={c._id} className="card hover:shadow-md transition">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="text-3xl">📄</div>
+                      <StatusBadge status={c.status} />
+                    </div>
+                    <h3 className="font-semibold text-gray-800">{c.title}</h3>
+                    <p className="text-sm text-gray-500 mt-1">Issued by: {c.issuedBy}</p>
+                    {c.issuedDate && <p className="text-xs text-gray-400 mt-1">{new Date(c.issuedDate).toLocaleDateString()}</p>}
+                    {c.skillId && <p className="text-xs text-indigo-500 mt-1">Skill: {c.skillId?.name}</p>}
+                    {c.reviewNote && <p className="text-xs bg-gray-50 rounded p-2 mt-2 text-gray-600">{c.reviewNote}</p>}
+                    <a href={c.fileUrl} target="_blank" rel="noopener noreferrer"
+                      className="mt-3 inline-block text-xs text-indigo-600 hover:underline">
+                      View Certificate →
+                    </a>
+                  </div>
+                ))}
+              </div>
+          }
+        </>
+      )}
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Upload Certificate">
         <form onSubmit={handleSubmit} className="space-y-4">

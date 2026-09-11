@@ -30,31 +30,36 @@ export default function FacultyResources() {
     toast.success('Removed')
   }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Learning Resources 📚">
-      <div className="flex justify-end mb-6">
-        <button onClick={() => setShowModal(true)} className="btn-primary">+ Add Resource</button>
-      </div>
-      {resources.length === 0
-        ? <EmptyState icon="📚" title="No Resources" message="Post learning resources for students" />
-        : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {resources.map(r => (
-              <div key={r._id} className="card hover:shadow-md transition">
-                <div className="flex justify-between items-start">
-                  <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">{r.category}</span>
-                  <button onClick={() => handleDelete(r._id)} className="text-xs text-red-400 hover:text-red-600">✕</button>
-                </div>
-                <h3 className="font-semibold text-gray-800 mt-2">{r.title}</h3>
-                {r.description && <p className="text-sm text-gray-500 mt-1">{r.description}</p>}
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {r.skillTags?.map(tag => <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>)}
-                </div>
-                <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-3 block text-xs text-indigo-600 hover:underline">Open Link →</a>
-              </div>
-            ))}
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : (
+        <>
+          <div className="flex justify-end mb-6">
+            <button onClick={() => setShowModal(true)} className="btn-primary">+ Add Resource</button>
           </div>
-      }
+          {resources.length === 0
+            ? <EmptyState icon="📚" title="No Resources" message="Post learning resources for students" />
+            : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {resources.map(r => (
+                  <div key={r._id} className="card hover:shadow-md transition">
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">{r.category}</span>
+                      <button onClick={() => handleDelete(r._id)} className="text-xs text-red-400 hover:text-red-600">✕</button>
+                    </div>
+                    <h3 className="font-semibold text-gray-800 mt-2">{r.title}</h3>
+                    {r.description && <p className="text-sm text-gray-500 mt-1">{r.description}</p>}
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {r.skillTags?.map(tag => <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>)}
+                    </div>
+                    <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-3 block text-xs text-indigo-600 hover:underline">Open Link →</a>
+                  </div>
+                ))}
+              </div>
+          }
+        </>
+      )}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Add Learning Resource">
         <form onSubmit={handleSubmit} className="space-y-4">
           {[['title','Title','text','e.g. React Documentation'],['url','URL','url','https://...'],['category','Category','text','e.g. Web Development']].map(([k,l,t,p]) => (

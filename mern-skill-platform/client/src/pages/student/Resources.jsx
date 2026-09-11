@@ -16,13 +16,15 @@ export default function StudentResources() {
     return () => clearTimeout(timer)
   }, [search])
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Learning Resources 📚">
       <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search resources..." className="input-field max-w-md mb-6" />
-      {resources.length === 0
-        ? <EmptyState icon="📚" title="No Resources" message="Faculty will post learning resources here" />
-        : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {loading ? (
+        <LoadingSpinner fullScreen={false} />
+      ) : resources.length === 0 ? (
+        <EmptyState icon="📚" title="No Resources" message="Faculty will post learning resources here" />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {resources.map(r => (
               <div key={r._id} className="card hover:shadow-md transition group">
                 <div className="flex justify-between items-start mb-2">
@@ -41,7 +43,7 @@ export default function StudentResources() {
               </div>
             ))}
           </div>
-      }
+      )}
     </PageLayout>
   )
 }

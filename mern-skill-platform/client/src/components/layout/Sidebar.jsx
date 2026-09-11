@@ -40,8 +40,8 @@ export default function Sidebar({ isOpen, onClose }) {
             <NavLink key={item.to} to={item.to} end={item.to === '/student' || item.to === '/faculty'}
               onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition
-                ${isActive ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 active:scale-[0.98]
+                ${isActive ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-300 hover:bg-gray-800/80 hover:text-white'}`
               }>
               <span>{item.icon}</span>{item.label}
             </NavLink>

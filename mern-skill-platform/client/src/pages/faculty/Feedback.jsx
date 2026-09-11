@@ -33,11 +33,13 @@ export default function FacultyFeedback() {
     } finally { setSending(false) }
   }
 
-  if (loading) return <LoadingSpinner />
   return (
     <PageLayout title="Give Feedback 💬">
       <div className="max-w-xl">
-        <div className="card">
+        {loading ? (
+          <LoadingSpinner fullScreen={false} />
+        ) : (
+          <div className="card">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Select Student</label>
@@ -72,6 +74,7 @@ export default function FacultyFeedback() {
             </button>
           </form>
         </div>
+        )}
       </div>
     </PageLayout>
   )
