@@ -18,6 +18,19 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const mongoose = require('mongoose');
+
+// DB readiness check for incoming API requests
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path === '/api/health') return next();
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      message: 'Database is still initializing, please try again in a few seconds.',
+    });
+  }
+  next();
+});
+
 // Serve uploaded files locally (when Cloudinary not configured)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
