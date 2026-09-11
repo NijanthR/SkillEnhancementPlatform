@@ -12,7 +12,7 @@ const addFeedback = asyncHandler(async (req, res) => {
     title:   'New Faculty Feedback',
     message: `Faculty ${req.user.name} left feedback: "${message.substring(0, 60)}..."`,
     type:    'feedback',
-    link:    '/feedback',
+    link:    '/student/feedback',
   });
   res.status(201).json(feedback);
 });

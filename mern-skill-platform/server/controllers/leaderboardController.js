@@ -9,14 +9,13 @@ const getLeaderboard = asyncHandler(async (req, res) => {
   const pipeline = [
     { $match: { status: 'Verified' } },
     { $group: { _id: '$studentId', verifiedCount: { $sum: 1 } } },
-    { $sort: { verifiedCount: -1 } },
-    { $limit: 50 },
     { $lookup: {
         from: 'users', localField: '_id', foreignField: '_id',
         as: 'student'
     }},
     { $unwind: '$student' },
     { $match: { 'student.role': 'student', ...(department ? { 'student.department': { $regex: department, $options: 'i' } } : {}) } },
+    { $limit: 50 },
     { $project: {
         _id: 1,
         name: '$student.name',

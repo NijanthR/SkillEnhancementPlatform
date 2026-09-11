@@ -15,7 +15,8 @@ export default function Login() {
       toast.success(`Welcome, ${user.name}!`)
       navigate(user.role === 'faculty' ? '/faculty' : '/student')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed')
+      const msg = err.response?.data?.message || (err.response?.data?.errors ? err.response.data.errors.map(e => e.msg || e.path).join(', ') : null) || err.message || 'Login failed'
+      toast.error(msg)
     }
   }
 
@@ -46,6 +47,26 @@ export default function Login() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
+
+          {/* Quick Demo Credentials */}
+          <div className="mt-6 pt-5 border-t border-gray-100">
+            <p className="text-xs text-center text-gray-500 font-medium mb-3">⚡ Quick Demo Login:</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setForm({ email: 'faculty@college.edu', password: 'password123' })}
+                className="text-xs py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-medium border border-indigo-200 transition">
+                👨‍🏫 Faculty Demo
+              </button>
+              <button
+                type="button"
+                onClick={() => setForm({ email: 'student@college.edu', password: 'password123' })}
+                className="text-xs py-2 px-3 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-lg font-medium border border-purple-200 transition">
+                👨‍🎓 Student Demo
+              </button>
+            </div>
+          </div>
+
           <p className="text-center text-gray-500 mt-6 text-sm">
             New student?{' '}
             <Link to="/register" className="text-indigo-600 font-medium hover:underline">Create account</Link>

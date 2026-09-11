@@ -38,7 +38,11 @@ export default function Navbar({ onMenuClick }) {
               {notifications.length === 0
                 ? <p className="text-center text-gray-400 text-sm py-6">No notifications</p>
                 : notifications.map(n => (
-                  <div key={n._id} onClick={() => markRead(n._id)}
+                  <div key={n._id} onClick={() => {
+                    markRead(n._id);
+                    if (n.link) navigate(n.link);
+                    setShowNotifs(false);
+                  }}
                     className={`px-4 py-3 border-b hover:bg-gray-50 cursor-pointer ${!n.isRead ? 'bg-indigo-50' : ''}`}>
                     <p className="text-sm font-medium text-gray-800">{n.title}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{n.message}</p>

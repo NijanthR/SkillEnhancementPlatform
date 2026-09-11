@@ -26,7 +26,7 @@ const verifySkill = asyncHandler(async (req, res) => {
     title:   `Skill ${status}`,
     message: messages[status] || `Your skill "${skill.name}" status updated.`,
     type:    status === 'Verified' ? 'skill_verified' : 'skill_rejected',
-    link:    '/skills',
+    link:    '/student/skills',
   });
 
   res.json(skill);

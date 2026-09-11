@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import PageLayout from '../../components/layout/PageLayout'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import api from '../../services/api'
+import toast from 'react-hot-toast'
 
 export default function FacultyFeedback() {
   const [students, setStudents] = useState([])
@@ -10,7 +11,6 @@ export default function FacultyFeedback() {
   const [form, setForm] = useState({ message: '', type: 'general', skillId: '' })
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
-  const toast_import = () => import('react-hot-toast').then(m => m.default)
 
   useEffect(() => {
     api.get('/students').then(r => setStudents(r.data.students)).finally(() => setLoading(false))
@@ -26,12 +26,10 @@ export default function FacultyFeedback() {
     setSending(true)
     try {
       await api.post('/feedback', { studentId: selected, ...form })
-      const toast = await toast_import()
       toast.success('Feedback sent!')
       setForm({ message: '', type: 'general', skillId: '' })
     } catch {
-      const toast = await toast_import()
-      toast.error('Failed')
+      toast.error('Failed to send feedback')
     } finally { setSending(false) }
   }
 
