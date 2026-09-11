@@ -11,6 +11,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: MONGOMS_VERSION
+        value: 7.0.14
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET

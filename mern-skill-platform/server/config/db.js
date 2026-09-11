@@ -34,7 +34,11 @@ const connectDB = async () => {
   // 3. Fallback to embedded MongoMemoryServer
   try {
     const { MongoMemoryServer } = require('mongodb-memory-server');
-    mongodInstance = await MongoMemoryServer.create();
+    mongodInstance = await MongoMemoryServer.create({
+      binary: {
+        version: '7.0.14',
+      },
+    });
     const memoryUri = mongodInstance.getUri();
     const conn = await mongoose.connect(memoryUri);
     console.log(`✅ Embedded In-Memory MongoDB Server Connected: ${conn.connection.host}`);
